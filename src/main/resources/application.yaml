@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+application:
+  esp:
+    storagePathFw: storage/esp/frw
+    storagePathFs: storage/esp/fs
+    prefFw: firmware_
+    prefFs: spiffs_
