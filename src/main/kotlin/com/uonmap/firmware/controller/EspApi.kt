@@ -23,6 +23,6 @@ class EspApi(
         if (headers["user-agent"] == "ESP32-http-Update" &&
             headers["x-esp32-mode"] == "spiffs") espFs.getFwFile(espFs.getLastFwPath())
         else if (headers["user-agent"] == "ESP32-http-Update" &&
-            headers["x-esp32-mode"] == "fw") espFw.getFwFile(espFw.getLastFwPath())
+            headers["x-esp32-mode"] == "sketch") espFw.getFwFile(espFw.getLastFwPath())
         else throw HeaderNotCorrectExeption("User-Agent or x-ESP32-mode not correct")
 }
