@@ -15,7 +15,6 @@ class EspFileSystem(
     override val httpHeadersList: List<String> = listOf(
         "x-esp32-sta-mac",
         "x-esp32-ap-mac",
-        "x-esp32-free-space",
         "x-esp32-mode"),
     ): Firmware() {
     init {
