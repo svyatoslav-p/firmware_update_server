@@ -19,7 +19,7 @@ abstract class Firmware(
     abstract val regexFilter: Regex
     abstract val httpHeadersList: List<String>
 
-    fun httpHeaderCheck(headersRequest: Map<String, String>): Boolean {
+    fun checkHeader(headersRequest: Map<String, String>): Boolean {
         httpHeadersList.forEach { if (!headersRequest.containsKey(it)) return false }
         return true
     }
@@ -55,12 +55,11 @@ abstract class Firmware(
                 .header("x-MD5", md5sum )
                 .body(file)}
 
-    private fun loadFile(filePath: String): Resource {
+    private fun loadFile(
+        filePath: String
+    ): Resource {
         val resource = UrlResource(Paths.get(filePath).toUri())
-        if (resource.exists() || resource.isReadable) {
-            return resource
-        } else {
-            throw RuntimeException("Error file load: $filePath")
-        }
+        if (resource.exists() || resource.isReadable) return resource
+        else throw RuntimeException("Error file load: $filePath")
     }
 }
