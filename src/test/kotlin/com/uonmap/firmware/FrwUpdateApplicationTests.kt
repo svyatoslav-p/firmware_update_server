@@ -15,7 +15,8 @@ class FrwUpdateApplicationTests @Autowired constructor(
 	fun `Get file fs update for ESP client`() {
 		val headers = HttpHeaders()
 		headers.add("x-esp32-mode" , "spiffs")
-		headers.add("user-agent" , "ESP32-http-Update")
+		headers.add("x-esp32-sta-mac" , "24:6F:28:DA:7E:B0")
+		headers.add("x-esp32-version" , "0.0.25")
 		mockMvc.perform(
 			get("/api/v1/esp/update")
 				.headers(headers))
@@ -28,7 +29,8 @@ class FrwUpdateApplicationTests @Autowired constructor(
 	fun `Get file frw update for ESP client`() {
 		val headers = HttpHeaders()
 		headers.add("x-esp32-mode" , "sketch")
-		headers.add("user-agent" , "ESP32-http-Update")
+		headers.add("x-esp32-sta-mac" , "24:6F:28:DA:7E:B0")
+		headers.add("x-esp32-version" , "0.0.25")
 		mockMvc.perform(
 			get("/api/v1/esp/update")
 				.headers(headers))

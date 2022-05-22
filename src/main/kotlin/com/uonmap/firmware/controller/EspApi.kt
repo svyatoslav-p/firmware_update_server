@@ -3,6 +3,12 @@ package com.uonmap.firmware.controller
 import com.uonmap.firmware.exeption.*
 import com.uonmap.firmware.service.EspFileSystem
 import com.uonmap.firmware.service.EspFirmware
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.Parameters
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,9 +26,9 @@ class EspApi(
     fun update(
         @RequestHeader headers: Map<String, String>
     ): ResponseEntity<Resource> =
-        if (headers["user-agent"] == "ESP32-http-Update" &&
-            headers["x-esp32-mode"] == "spiffs") espFs.getFwFile(espFs.getLastFwPath())
-        else if (headers["user-agent"] == "ESP32-http-Update" &&
-            headers["x-esp32-mode"] == "sketch") espFw.getFwFile(espFw.getLastFwPath())
-        else throw HeaderNotCorrectExeption("User-Agent or x-ESP32-mode not correct")
+        if (headers["x-esp32-mode"] == "spiffs" && espFs.checkHeader(headers)) {
+            espFs.getFwFile(espFs.getLastFwPath())
+        } else if (headers["x-esp32-mode"] == "sketch" && espFw.checkHeader(headers)) {
+            espFw.getFwFile(espFw.getLastFwPath())
+        } else throw HeaderNotCorrectExeption("x-ESP32-mode not correct or not enough required headers")
 }
