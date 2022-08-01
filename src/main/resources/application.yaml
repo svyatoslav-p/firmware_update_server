@@ -7,3 +7,6 @@ application:
     storagePathFs: storage/esp/fs
     prefFw: firmware_
     prefFs: spiffs_
+springdoc:
+  swagger-ui:
+    url: /swagger/swagger-main.yaml

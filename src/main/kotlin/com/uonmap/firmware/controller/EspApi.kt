@@ -3,12 +3,6 @@ package com.uonmap.firmware.controller
 import com.uonmap.firmware.exeption.*
 import com.uonmap.firmware.service.EspFileSystem
 import com.uonmap.firmware.service.EspFirmware
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.Parameters
-import io.swagger.v3.oas.annotations.enums.ParameterIn
-import io.swagger.v3.oas.annotations.responses.ApiResponse
-import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

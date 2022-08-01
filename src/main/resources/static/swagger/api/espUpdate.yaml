@@ -1,0 +1,49 @@
+get:
+  tags:
+  - esp-api
+  summary: Get the update file for ESP32
+  description: Returns the update file or an explanation why the file did not attach.
+  operationId: update
+  parameters:
+  - name: x-ESP32-mode
+    in: header
+    description: Type file response spiffs or sketch
+    example: spiffs
+  - name: x-ESP32-STA-MAC
+    in: header
+    description: MAC address device
+    example: 24:6F:28:DA:7E:B0
+  - name: x-ESP32-version
+    in: header
+    description: Current version firmware or file system ESP32
+    example: 0.0.25
+  responses:
+    "404":
+      description: File Not Found
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components.yaml#/components/schemas/ApiError'
+    "200":
+      description: Firmware file
+      headers:
+        x-MD5:
+          description: MD5 sum of found file
+          style: simple
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              format: binary
+    "400":
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components.yaml#/components/schemas/ApiError'

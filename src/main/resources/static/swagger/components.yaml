@@ -1,0 +1,15 @@
+components:
+  schemas:
+    ApiError:
+      required:
+        - description
+        - error
+        - timestamp
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+        timestamp:
+          type: string
