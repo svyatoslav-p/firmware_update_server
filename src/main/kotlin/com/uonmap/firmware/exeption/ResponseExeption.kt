@@ -13,7 +13,7 @@ class FileNotFoundExeption (description: String) : BaseException(
 class HeaderNotCorrectExeption (description: String) : BaseException(
     HttpStatus.BAD_REQUEST,
     ApiError(
-        error = "header.user-agent.not.correct",
+        error = "header.not.correct",
         description
     )
 )

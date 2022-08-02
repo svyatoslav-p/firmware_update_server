@@ -14,7 +14,7 @@ class EspFirmware(
         storagePath + File.separator+"${property.prefFw}(\\d+)_(\\d+)_(\\d+).bin"),
     override val httpHeadersList: List<String> = listOf(
         "x-esp32-sta-mac",
-        "x-esp32-ap-mac",
+        "x-esp32-version",
         "x-esp32-mode"),
     ): Firmware() {
     init {
