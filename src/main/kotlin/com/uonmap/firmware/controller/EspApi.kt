@@ -48,11 +48,11 @@ class EspApi(
     )
     @Parameters(
         value = [
-            Parameter(name = "x-ESP32-mode", example = "spiffs",
+            Parameter(required = true, name = "x-ESP32-mode", example = "spiffs",
                 description = "Type file response spiffs or sketch", `in` = ParameterIn.HEADER),
-            Parameter(name = "x-ESP32-STA-MAC", example = "24:6F:28:DA:7E:B0",
+            Parameter(required = true, name = "x-ESP32-STA-MAC", example = "24:6F:28:DA:7E:B0",
                 description = "MAC address device", `in` = ParameterIn.HEADER),
-            Parameter(name = "x-ESP32-version", example = "0.0.25",
+            Parameter(required = true, name = "x-ESP32-version", example = "0.0.25",
                 description = "Current version firmware or file system ESP32", `in` = ParameterIn.HEADER)
         ]
     )
