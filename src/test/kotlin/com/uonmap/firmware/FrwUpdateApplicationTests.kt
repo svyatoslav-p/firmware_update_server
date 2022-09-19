@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class FrwUpdateApplicationTests @Autowired constructor(
@@ -22,7 +23,8 @@ class FrwUpdateApplicationTests @Autowired constructor(
 				.headers(headers))
 			.andExpect(status().isOk)
 			.andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"spiffs_1_5_7.bin\""))
-			.andExpect(header().string("x-MD5", "72cd641de7f01fb47cad2462475a6c5a"));
+			.andExpect(header().string("x-MD5", "72cd641de7f01fb47cad2462475a6c5a"))
+			.andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test
@@ -36,6 +38,7 @@ class FrwUpdateApplicationTests @Autowired constructor(
 				.headers(headers))
 			.andExpect(status().isOk)
 			.andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"firmware_3_0_28.bin\""))
-			.andExpect(header().string("x-MD5", "25105d25daccbd225e23b197e8960430"));
+			.andExpect(header().string("x-MD5", "25105d25daccbd225e23b197e8960430"))
+			.andDo(MockMvcResultHandlers.print());
 	}
 }
