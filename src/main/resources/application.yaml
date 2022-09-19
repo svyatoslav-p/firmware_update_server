@@ -1,9 +1,22 @@
 server:
   port: 8080
-
+logging:
+  level:
+    root: info
+  file:
+    name: app.log
 application:
   esp:
     storagePathFw: storage/esp/frw
     storagePathFs: storage/esp/fs
     prefFw: firmware_
     prefFs: spiffs_
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: httptrace, info, health, metrics, logfile
+  trace:
+    http:
+      enabled: true

@@ -28,6 +28,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation ("io.github.microutils:kotlin-logging-jvm:2.1.23")
+	//Actuator
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	//OpenAPI 3
 	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.9")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
