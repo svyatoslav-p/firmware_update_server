@@ -1,6 +1,9 @@
 package com.uonmap.firmware.service
 
 import com.uonmap.firmware.config.EspConfig
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_MODE
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_STA_MAC
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_VER
 import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Files
@@ -11,11 +14,11 @@ class EspFirmware(
     val property: EspConfig,
     override val storagePath: String = property.storagePathFw,
     override val regexFilter: Regex = Regex(
-        storagePath + File.separator+"${property.prefFw}(\\d+)_(\\d+)_(\\d+).bin"),
+        storagePath + File.separator + "${property.prefFw}(\\d+)_(\\d+)_(\\d+).bin"),
     override val httpHeadersList: List<String> = listOf(
-        "x-esp32-sta-mac",
-        "x-esp32-version",
-        "x-esp32-mode"),
+        HEAD_X_ESP32_STA_MAC,
+        HEAD_X_ESP32_VER,
+        HEAD_X_ESP32_MODE),
     ): Firmware() {
     init {
         Files.createDirectories(Paths.get(storagePath))

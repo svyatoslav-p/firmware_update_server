@@ -1,5 +1,12 @@
 package com.uonmap.firmware
 
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_MODE
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_STA_MAC
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_VER
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_MD5
+import com.uonmap.firmware.config.RestHttpConsts.PARAM_ESP32_MODE_SKETCH
+import com.uonmap.firmware.config.RestHttpConsts.PARAM_ESP32_MODE_SPIFFS
+import com.uonmap.firmware.config.RestHttpConsts.URI_ESP_UPDATE_FULL
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
@@ -15,30 +22,30 @@ class FrwUpdateApplicationTests @Autowired constructor(
 	@Test
 	fun `Get file fs update for ESP client`() {
 		val headers = HttpHeaders()
-		headers.add("x-esp32-mode" , "spiffs")
-		headers.add("x-esp32-sta-mac" , "24:6F:28:DA:7E:B0")
-		headers.add("x-esp32-version" , "0.0.25")
+		headers.add(HEAD_X_ESP32_MODE , PARAM_ESP32_MODE_SPIFFS)
+		headers.add(HEAD_X_ESP32_STA_MAC , "24:6F:28:DA:7E:B0")
+		headers.add(HEAD_X_ESP32_VER , "0.0.25")
 		mockMvc.perform(
-			get("/api/v1/esp/update")
+			get(URI_ESP_UPDATE_FULL)
 				.headers(headers))
 			.andExpect(status().isOk)
 			.andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"spiffs_1_5_7.bin\""))
-			.andExpect(header().string("x-MD5", "72cd641de7f01fb47cad2462475a6c5a"))
+			.andExpect(header().string(HEAD_X_MD5, "72cd641de7f01fb47cad2462475a6c5a"))
 			.andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test
 	fun `Get file frw update for ESP client`() {
 		val headers = HttpHeaders()
-		headers.add("x-esp32-mode" , "sketch")
-		headers.add("x-esp32-sta-mac" , "24:6F:28:DA:7E:B0")
-		headers.add("x-esp32-version" , "0.0.25")
+		headers.add(HEAD_X_ESP32_MODE , PARAM_ESP32_MODE_SKETCH)
+		headers.add(HEAD_X_ESP32_STA_MAC , "24:6F:28:DA:7E:B0")
+		headers.add(HEAD_X_ESP32_VER , "0.0.25")
 		mockMvc.perform(
-			get("/api/v1/esp/update")
+			get(URI_ESP_UPDATE_FULL)
 				.headers(headers))
 			.andExpect(status().isOk)
 			.andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"firmware_3_0_28.bin\""))
-			.andExpect(header().string("x-MD5", "25105d25daccbd225e23b197e8960430"))
+			.andExpect(header().string(HEAD_X_MD5, "25105d25daccbd225e23b197e8960430"))
 			.andDo(MockMvcResultHandlers.print());
 	}
 }

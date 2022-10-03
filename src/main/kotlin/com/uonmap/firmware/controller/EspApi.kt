@@ -1,5 +1,17 @@
 package com.uonmap.firmware.controller
 
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_MODE
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_STA_MAC
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_VER
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_MD5
+import com.uonmap.firmware.config.RestHttpConsts.HTTP_200_STRING
+import com.uonmap.firmware.config.RestHttpConsts.HTTP_400_STRING
+import com.uonmap.firmware.config.RestHttpConsts.HTTP_404_STRING
+import com.uonmap.firmware.config.RestHttpConsts.MEDIA_JSON
+import com.uonmap.firmware.config.RestHttpConsts.PARAM_ESP32_MODE_SKETCH
+import com.uonmap.firmware.config.RestHttpConsts.PARAM_ESP32_MODE_SPIFFS
+import com.uonmap.firmware.config.RestHttpConsts.URI_ESP_FULL
+import com.uonmap.firmware.config.RestHttpConsts.URI_UPDATE
 import com.uonmap.firmware.exeption.*
 import com.uonmap.firmware.service.EspFileSystem
 import com.uonmap.firmware.service.EspFirmware
@@ -21,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/esp")
+@RequestMapping(URI_ESP_FULL)
 class EspApi(
     private val espFw: EspFirmware,
     private val espFs: EspFileSystem
@@ -30,38 +42,38 @@ class EspApi(
         description = "Returns the update file or an explanation why the file did not attach.")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Firmware file",
+            ApiResponse(responseCode = HTTP_200_STRING, description = "Firmware file",
                 headers= [
-                    (Header(name="x-MD5", description ="MD5 sum of found file"))],
+                    (Header(name=HEAD_X_MD5, description ="MD5 sum of found file"))],
                 content = [
-                    (Content(mediaType = "application/json", array = (
+                    (Content(mediaType = MEDIA_JSON, array = (
                             ArraySchema(schema = Schema(type = "object", format = "binary")))))]),
-            ApiResponse(responseCode = "400", description = "Invalid request",
+            ApiResponse(responseCode = HTTP_400_STRING, description = "Invalid request",
                 content = [
-                    (Content(mediaType = "application/json", array = (
+                    (Content(mediaType = MEDIA_JSON, array = (
                             ArraySchema(schema = Schema(implementation = ApiError::class)))))]),
-            ApiResponse(responseCode = "404", description = "File Not Found",
+            ApiResponse(responseCode = HTTP_404_STRING, description = "File Not Found",
                 content = [
-                    (Content(mediaType = "application/json", array = (
+                    (Content(mediaType = MEDIA_JSON, array = (
                             ArraySchema(schema = Schema(implementation = ApiError::class)))))])]
     )
     @Parameters(
         value = [
-            Parameter(required = true, name = "x-ESP32-mode", example = "spiffs",
+            Parameter(required = true, name = HEAD_X_ESP32_MODE, example = PARAM_ESP32_MODE_SPIFFS,
                 description = "Type file response spiffs or sketch", `in` = ParameterIn.HEADER),
-            Parameter(required = true, name = "x-ESP32-STA-MAC", example = "24:6F:28:DA:7E:B0",
+            Parameter(required = true, name = HEAD_X_ESP32_STA_MAC, example = "24:6F:28:DA:7E:B0",
                 description = "MAC address device", `in` = ParameterIn.HEADER),
-            Parameter(required = true, name = "x-ESP32-version", example = "0.0.25",
+            Parameter(required = true, name = HEAD_X_ESP32_VER, example = "0.0.25",
                 description = "Current version firmware or file system ESP32", `in` = ParameterIn.HEADER)
         ]
     )
-    @GetMapping("/update")
+    @GetMapping(URI_UPDATE)
     fun update(
         @RequestHeader headers: Map<String, String>
     ): ResponseEntity<Resource> =
-        if (headers["x-esp32-mode"] == "spiffs" && espFs.checkHeader(headers)) {
+        if (headers[HEAD_X_ESP32_MODE] == PARAM_ESP32_MODE_SPIFFS && espFs.checkHeader(headers)) {
             espFs.getFwFile(espFs.getLastFwPath())
-        } else if (headers["x-esp32-mode"] == "sketch" && espFw.checkHeader(headers)) {
+        } else if (headers[HEAD_X_ESP32_MODE] == PARAM_ESP32_MODE_SKETCH && espFw.checkHeader(headers)) {
             espFw.getFwFile(espFw.getLastFwPath())
         } else throw HeaderNotCorrectExeption("x-ESP32-mode not correct or not enough required headers")
 }
