@@ -1,6 +1,7 @@
 package com.uonmap.firmware.service
 
-import com.uonmap.firmware.exeption.FileNotFoundExeption
+import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_MD5
+import com.uonmap.firmware.http.exeption.FileNotFoundExeption
 import mu.KLogger
 import org.springframework.core.io.Resource
 import org.springframework.core.io.UrlResource
@@ -52,7 +53,7 @@ abstract class Firmware(
         logger.info { "Download file: $filePath MD5: $md5sum" }
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.filename + "\"")
-                .header("x-MD5", md5sum )
+                .header(HEAD_X_MD5, md5sum )
                 .body(file)}
 
     private fun loadFile(

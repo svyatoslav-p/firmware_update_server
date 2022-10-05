@@ -22,16 +22,19 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation ("io.github.microutils:kotlin-logging-jvm:2.1.23")
+	implementation ("io.github.microutils:kotlin-logging-jvm:3.0.0")
+	//Actuator
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	//OpenAPI 3
-	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.9")
-	implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
-	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.9")
+	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.11")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
+	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.11")
+	//Jackson
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
