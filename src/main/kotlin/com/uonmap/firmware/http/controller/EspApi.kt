@@ -1,4 +1,4 @@
-package com.uonmap.firmware.controller
+package com.uonmap.firmware.http.controller
 
 import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_MODE
 import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_ESP32_STA_MAC
@@ -7,12 +7,14 @@ import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_MD5
 import com.uonmap.firmware.config.RestHttpConsts.HTTP_200_STRING
 import com.uonmap.firmware.config.RestHttpConsts.HTTP_400_STRING
 import com.uonmap.firmware.config.RestHttpConsts.HTTP_404_STRING
-import com.uonmap.firmware.config.RestHttpConsts.MEDIA_JSON
 import com.uonmap.firmware.config.RestHttpConsts.PARAM_ESP32_MODE_SKETCH
 import com.uonmap.firmware.config.RestHttpConsts.PARAM_ESP32_MODE_SPIFFS
 import com.uonmap.firmware.config.RestHttpConsts.URI_ESP_FULL
+import com.uonmap.firmware.config.RestHttpConsts.URI_FIRMWARE
 import com.uonmap.firmware.config.RestHttpConsts.URI_UPDATE
-import com.uonmap.firmware.exeption.*
+import com.uonmap.firmware.http.ApiError
+import com.uonmap.firmware.http.GenericResponse
+import com.uonmap.firmware.http.exeption.HeaderNotCorrectExeption
 import com.uonmap.firmware.service.EspFileSystem
 import com.uonmap.firmware.service.EspFirmware
 import io.swagger.v3.oas.annotations.Operation
@@ -26,6 +28,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.core.io.Resource
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
@@ -42,20 +45,12 @@ class EspApi(
         description = "Returns the update file or an explanation why the file did not attach.")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = HTTP_200_STRING, description = "Firmware file",
+            ApiResponse(responseCode = HTTP_200_STRING, description = "Firmware file or body with an error",
                 headers= [
                     (Header(name=HEAD_X_MD5, description ="MD5 sum of found file"))],
                 content = [
-                    (Content(mediaType = MEDIA_JSON, array = (
-                            ArraySchema(schema = Schema(type = "object", format = "binary")))))]),
-            ApiResponse(responseCode = HTTP_400_STRING, description = "Invalid request",
-                content = [
-                    (Content(mediaType = MEDIA_JSON, array = (
-                            ArraySchema(schema = Schema(implementation = ApiError::class)))))]),
-            ApiResponse(responseCode = HTTP_404_STRING, description = "File Not Found",
-                content = [
-                    (Content(mediaType = MEDIA_JSON, array = (
-                            ArraySchema(schema = Schema(implementation = ApiError::class)))))])]
+                    (Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = (
+                            ArraySchema(schema = Schema(implementation = GenericResponse::class)))))])]
     )
     @Parameters(
         value = [
@@ -76,4 +71,9 @@ class EspApi(
         } else if (headers[HEAD_X_ESP32_MODE] == PARAM_ESP32_MODE_SKETCH && espFw.checkHeader(headers)) {
             espFw.getFwFile(espFw.getLastFwPath())
         } else throw HeaderNotCorrectExeption("x-ESP32-mode not correct or not enough required headers")
+
+    @GetMapping(URI_FIRMWARE)
+    fun getFirmwareInfo(): GenericResponse {
+        return GenericResponse(espFw.getListAllPath())
+    }
 }

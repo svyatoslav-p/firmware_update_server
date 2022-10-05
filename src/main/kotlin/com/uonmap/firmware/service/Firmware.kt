@@ -1,7 +1,7 @@
 package com.uonmap.firmware.service
 
 import com.uonmap.firmware.config.RestHttpConsts.HEAD_X_MD5
-import com.uonmap.firmware.exeption.FileNotFoundExeption
+import com.uonmap.firmware.http.exeption.FileNotFoundExeption
 import mu.KLogger
 import org.springframework.core.io.Resource
 import org.springframework.core.io.UrlResource
