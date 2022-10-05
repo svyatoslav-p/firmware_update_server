@@ -14,11 +14,6 @@ object RestHttpConsts {
     const val URI_ESP_FULL = URI_API + URI_V1 + URI_ESP
     const val URI_ESP_UPDATE_FULL = URI_API + URI_V1 + URI_ESP + URI_UPDATE
 
-    /*HTTP коды*/
-    const val HTTP_200_STRING = "200"
-    const val HTTP_400_STRING = "400"
-    const val HTTP_404_STRING = "404"
-
     /*HTTP заголовки*/
     const val HEAD_X_MD5 = "x-MD5"
     const val HEAD_X_ESP32_MODE = "x-esp32-mode"
